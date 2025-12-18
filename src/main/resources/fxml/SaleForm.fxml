@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.florist.controller.SaleFormController"
+            prefHeight="500.0" prefWidth="600.0" styleClass="root">
+    
+    <!-- Top - Header -->
+    <top>
+        <VBox styleClass="header">
+            <padding>
+                <Insets top="15" right="20" bottom="15" left="20"/>
+            </padding>
+            <Label text="Enregistrer une Vente" styleClass="title">
+                <font><Font name="System Bold" size="24"/></font>
+            </Label>
+        </VBox>
+    </top>
+    
+    <!-- Center - Form -->
+    <center>
+        <VBox spacing="20" styleClass="form-panel">
+            <padding>
+                <Insets top="30" right="40" bottom="30" left="40"/>
+            </padding>
+            
+            <GridPane hgap="15" vgap="20">
+                <columnConstraints>
+                    <ColumnConstraints minWidth="150" prefWidth="150"/>
+                    <ColumnConstraints minWidth="300" prefWidth="350"/>
+                </columnConstraints>
+                
+                <Label text="Fleur:" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                    <font><Font size="14"/></font>
+                </Label>
+                <ComboBox fx:id="flowerComboBox" promptText="Sélectionner une fleur..." 
+                          GridPane.rowIndex="0" GridPane.columnIndex="1" 
+                          prefWidth="350" onAction="#handleFlowerSelection"/>
+                
+                <Label text="Prix unitaire:" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                    <font><Font size="14"/></font>
+                </Label>
+                <Label fx:id="unitPriceLabel" text="0.00 MAD" 
+                       GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="price-label">
+                    <font><Font size="16" /></font>
+                </Label>
+                
+                <Label text="Stock disponible:" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                    <font><Font size="14"/></font>
+                </Label>
+                <Label fx:id="availableStockLabel" text="0" 
+                       GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="stock-label">
+                    <font><Font size="16"/></font>
+                </Label>
+                
+                <Label text="Quantité vendue:" GridPane.rowIndex="3" GridPane.columnIndex="0">
+                    <font><Font size="14"/></font>
+                </Label>
+                <TextField fx:id="quantityField" promptText="Quantité" 
+                           GridPane.rowIndex="3" GridPane.columnIndex="1"
+                           onKeyReleased="#handleQuantityChange"/>
+                
+                <Label text="Nom du client:" GridPane.rowIndex="4" GridPane.columnIndex="0">
+                    <font><Font size="14"/></font>
+                </Label>
+                <TextField fx:id="customerNameField" promptText="Nom (optionnel)" 
+                           GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                
+                <Separator GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
+                
+                <Label text="Total:" GridPane.rowIndex="6" GridPane.columnIndex="0">
+                    <font><Font name="System Bold" size="16"/></font>
+                </Label>
+                <Label fx:id="totalPriceLabel" text="0.00 MAD" 
+                       GridPane.rowIndex="6" GridPane.columnIndex="1" styleClass="total-label">
+                    <font><Font name="System Bold" size="20"/></font>
+                </Label>
+            </GridPane>
+            
+            <HBox spacing="15" alignment="CENTER">
+                <padding>
+                    <Insets top="20"/>
+                </padding>
+                <Button fx:id="saveSaleBtn" text="✅ Enregistrer la Vente" 
+                        onAction="#handleSaveSale" styleClass="success-button">
+                    <font><Font size="14"/></font>
+                </Button>
+                <Button fx:id="clearBtn" text="🔄 Effacer" onAction="#handleClear">
+                    <font><Font size="14"/></font>
+                </Button>
+            </HBox>
+        </VBox>
+    </center>
+    
+    <!-- Bottom - Back Button -->
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_LEFT" styleClass="bottom-bar">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            <Button fx:id="backBtn" text="← Retour au Menu" onAction="#handleBack"/>
+        </HBox>
+    </bottom>
+</BorderPane>

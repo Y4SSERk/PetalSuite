@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.florist.controller.FlowerManagementController"
+            prefHeight="700.0" prefWidth="1000.0" styleClass="root">
+    
+    <!-- Top - Header -->
+    <top>
+        <VBox styleClass="header">
+            <padding>
+                <Insets top="15" right="20" bottom="15" left="20"/>
+            </padding>
+            <Label text="Gestion des Fleurs" styleClass="title">
+                <font><Font name="System Bold" size="24"/></font>
+            </Label>
+        </VBox>
+    </top>
+    
+    <!-- Center - Table and Form -->
+    <center>
+        <SplitPane dividerPositions="0.6">
+            <!-- Left - Table -->
+            <VBox spacing="10">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+                
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Button fx:id="refreshBtn" text="🔄 Actualiser" onAction="#handleRefresh"/>
+                    <Button fx:id="deleteBtn" text="🗑️ Supprimer" onAction="#handleDelete" styleClass="danger-button"/>
+                </HBox>
+                
+                <TableView fx:id="flowerTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+                        <TableColumn fx:id="nameColumn" text="Nom" prefWidth="120"/>
+                        <TableColumn fx:id="colorColumn" text="Couleur" prefWidth="90"/>
+                        <TableColumn fx:id="categoryColumn" text="Catégorie" prefWidth="100"/>
+                        <TableColumn fx:id="priceColumn" text="Prix (MAD)" prefWidth="80"/>
+                        <TableColumn fx:id="quantityColumn" text="Stock" prefWidth="70"/>
+                        <TableColumn fx:id="arrivalDateColumn" text="Date d'arrivée" prefWidth="110"/>
+                        <TableColumn fx:id="freshnessDaysColumn" text="Fraîcheur (j)" prefWidth="100"/>
+                        <TableColumn fx:id="supplierColumn" text="Fournisseur" prefWidth="120"/>
+                    </columns>
+                </TableView>
+            </VBox>
+            
+            <!-- Right - Form -->
+            <VBox spacing="15" styleClass="form-panel">
+                <padding>
+                    <Insets top="15" right="15" bottom="15" left="15"/>
+                </padding>
+                
+                <Label text="Détails de la Fleur" styleClass="form-title">
+                    <font><Font name="System Bold" size="16"/></font>
+                </Label>
+                
+                <GridPane hgap="10" vgap="10">
+                    <Label text="Nom:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <TextField fx:id="nameField" promptText="Nom de la fleur" 
+                               GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                    
+                    <Label text="Couleur:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <TextField fx:id="colorField" promptText="Couleur" 
+                               GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    
+                    <Label text="Catégorie:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <TextField fx:id="categoryField" promptText="Catégorie" 
+                               GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                    
+                    <Label text="Prix (MAD):" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                    <TextField fx:id="priceField" promptText="0.00" 
+                               GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                    
+                    <Label text="Quantité:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                    <TextField fx:id="quantityField" promptText="0" 
+                               GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                    
+                    <Label text="Date d'arrivée:" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                    <DatePicker fx:id="arrivalDatePicker" 
+                                GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+                    
+                    <Label text="Fraîcheur (jours):" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                    <TextField fx:id="freshnessDaysField" promptText="7" 
+                               GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+                    
+                    <Label text="Fournisseur:" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+                    <ComboBox fx:id="supplierComboBox" promptText="Sélectionner..." 
+                              GridPane.rowIndex="7" GridPane.columnIndex="1" prefWidth="200"/>
+                </GridPane>
+                
+                <HBox spacing="10" alignment="CENTER">
+                    <Button fx:id="addBtn" text="➕ Ajouter" onAction="#handleAdd" styleClass="success-button"/>
+                    <Button fx:id="updateBtn" text="✏️ Modifier" onAction="#handleUpdate" styleClass="primary-button"/>
+                    <Button fx:id="clearBtn" text="🔄 Effacer" onAction="#handleClear"/>
+                </HBox>
+            </VBox>
+        </SplitPane>
+    </center>
+    
+    <!-- Bottom - Back Button -->
+    <bottom>
+        <HBox spacing="10" alignment="CENTER_LEFT" styleClass="bottom-bar">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            <Button fx:id="backBtn" text="← Retour au Menu" onAction="#handleBack"/>
+        </HBox>
+    </bottom>
+</BorderPane>

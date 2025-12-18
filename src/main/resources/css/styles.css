@@ -1,0 +1,247 @@
+/* Florist Management System - Stylesheet */
+
+/* Root container */
+.root {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-font-size: 14px;
+    -fx-background-color: #f5f5f5;
+}
+
+/* Header styling */
+.header {
+    -fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%);
+    -fx-text-fill: white;
+}
+
+.title {
+    -fx-text-fill: white;
+}
+
+.subtitle {
+    -fx-text-fill: #e0e0e0;
+}
+
+/* Menu container */
+.menu-container {
+    -fx-background-color: #f5f5f5;
+}
+
+/* Menu buttons */
+.menu-button {
+    -fx-background-color: white;
+    -fx-text-fill: #333;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}
+
+.menu-button:hover {
+    -fx-background-color: #667eea;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(102,126,234,0.3), 15, 0, 0, 4);
+    -fx-scale-y: 1.02;
+    -fx-scale-x: 1.02;
+}
+
+.alert-button {
+    -fx-background-color: #fff3cd;
+    -fx-border-color: #ffc107;
+}
+
+.alert-button:hover {
+    -fx-background-color: #ffc107;
+    -fx-text-fill: #333;
+}
+
+/* Form panel */
+.form-panel {
+    -fx-background-color: white;
+    -fx-background-radius: 5;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+}
+
+.form-title {
+    -fx-text-fill: #667eea;
+}
+
+/* Buttons */
+.button {
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-padding: 8 15 8 15;
+}
+
+.success-button {
+    -fx-background-color: #28a745;
+    -fx-text-fill: white;
+}
+
+.success-button:hover {
+    -fx-background-color: #218838;
+}
+
+.primary-button {
+    -fx-background-color: #667eea;
+    -fx-text-fill: white;
+}
+
+.primary-button:hover {
+    -fx-background-color: #5568d3;
+}
+
+.danger-button {
+    -fx-background-color: #dc3545;
+    -fx-text-fill: white;
+}
+
+.danger-button:hover {
+    -fx-background-color: #c82333;
+}
+
+.action-button {
+    -fx-background-color: #667eea;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-padding: 10 20 10 20;
+}
+
+.action-button:hover {
+    -fx-background-color: #5568d3;
+}
+
+/* TableView */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+}
+
+.table-view .column-header {
+    -fx-background-color: #667eea;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-view .table-cell {
+    -fx-border-color: transparent;
+    -fx-padding: 5;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #e3e7ff;
+    -fx-text-fill: #333;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #f0f2ff;
+}
+
+/* TextFields and DatePicker */
+.text-field, .date-picker {
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #ddd;
+    -fx-border-width: 1;
+    -fx-padding: 5;
+}
+
+.text-field:focused, .date-picker:focused {
+    -fx-border-color: #667eea;
+    -fx-border-width: 2;
+}
+
+/* ComboBox */
+.combo-box {
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.combo-box:focused {
+    -fx-border-color: #667eea;
+}
+
+/* Status bar */
+.status-bar {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1 0 0 0;
+}
+
+.status-label {
+    -fx-text-fill: #666;
+}
+
+/* Bottom bar */
+.bottom-bar {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* Dashboard cards */
+.dashboard-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 8, 0, 0, 2);
+}
+
+.dashboard-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.15), 12, 0, 0, 4);
+}
+
+.alert-card {
+    -fx-background-color: #fff3cd;
+    -fx-border-color: #ffc107;
+}
+
+.card-icon {
+    -fx-text-fill: #667eea;
+}
+
+.card-title {
+    -fx-text-fill: #666;
+}
+
+.card-value {
+    -fx-text-fill: #333;
+}
+
+.section-title {
+    -fx-text-fill: #667eea;
+}
+
+/* Sale Form specific */
+.price-label {
+    -fx-text-fill: #667eea;
+}
+
+.stock-label {
+    -fx-text-fill: #28a745;
+}
+
+.total-label {
+    -fx-text-fill: #667eea;
+}
+
+/* Alert count */
+.alert-count {
+    -fx-text-fill: #dc3545;
+    -fx-font-weight: bold;
+}
+
+/* SplitPane */
+.split-pane {
+    -fx-background-color: #f5f5f5;
+}
+
+.split-pane-divider {
+    -fx-background-color: #ddd;
+}

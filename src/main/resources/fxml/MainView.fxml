@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.florist.controller.MainController"
+            prefHeight="600.0" prefWidth="800.0" styleClass="root">
+    
+    <!-- Top - Header -->
+    <top>
+        <VBox styleClass="header">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label text="Système de Gestion Fleuriste" styleClass="title">
+                <font>
+                    <Font name="System Bold" size="28"/>
+                </font>
+            </Label>
+            <Label text="Gestion complète de votre boutique de fleurs" styleClass="subtitle">
+                <font>
+                    <Font size="14"/>
+                </font>
+            </Label>
+        </VBox>
+    </top>
+    
+    <!-- Center - Navigation Menu -->
+    <center>
+        <VBox alignment="CENTER" spacing="20" styleClass="menu-container">
+            <padding>
+                <Insets top="40" right="40" bottom="40" left="40"/>
+            </padding>
+            
+            <GridPane hgap="20" vgap="20" alignment="CENTER">
+                <!-- Row 1 -->
+                <Button fx:id="manageFlowersBtn" text="🌸 Gérer les Fleurs" 
+                        onAction="#openFlowerManagement" 
+                        styleClass="menu-button" prefWidth="250" prefHeight="80"
+                        GridPane.rowIndex="0" GridPane.columnIndex="0">
+                    <font><Font size="16"/></font>
+                </Button>
+                
+                <Button fx:id="manageSuppliersBtn" text="📦 Gérer les Fournisseurs" 
+                        onAction="#openSupplierManagement" 
+                        styleClass="menu-button" prefWidth="250" prefHeight="80"
+                        GridPane.rowIndex="0" GridPane.columnIndex="1">
+                    <font><Font size="16"/></font>
+                </Button>
+                
+                <!-- Row 2 -->
+                <Button fx:id="recordSaleBtn" text="💰 Enregistrer une Vente" 
+                        onAction="#openSaleForm" 
+                        styleClass="menu-button" prefWidth="250" prefHeight="80"
+                        GridPane.rowIndex="1" GridPane.columnIndex="0">
+                    <font><Font size="16"/></font>
+                </Button>
+                
+                <Button fx:id="viewDashboardBtn" text="📊 Tableau de Bord" 
+                        onAction="#openDashboard" 
+                        styleClass="menu-button" prefWidth="250" prefHeight="80"
+                        GridPane.rowIndex="1" GridPane.columnIndex="1">
+                    <font><Font size="16"/></font>
+                </Button>
+                
+                <!-- Row 3 -->
+                <Button fx:id="viewAlertsBtn" text="⚠️ Alertes" 
+                        onAction="#openAlerts" 
+                        styleClass="menu-button alert-button" prefWidth="250" prefHeight="80"
+                        GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2">
+                    <font><Font size="16" /></font>
+                </Button>
+            </GridPane>
+        </VBox>
+    </center>
+    
+    <!-- Bottom - Status Bar -->
+    <bottom>
+        <HBox styleClass="status-bar" spacing="10" alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            <Label fx:id="statusLabel" text="Prêt" styleClass="status-label"/>
+        </HBox>
+    </bottom>
+</BorderPane>
