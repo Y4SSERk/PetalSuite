@@ -1,9 +1,0 @@
-ID,Name,Color,Category,Price,Quantity,ArrivalDate,FreshnessDays,SupplierID
-163,Lily,#800080,Potted Plant,12.0,0,2025-12-25,12,80
-164,Tulip,#FFFFFF,Potted Plant,23.0,8,2025-12-01,12,80
-165,Rose,#FF0000,Cut Flower,21.0,1,2025-12-25,12,80
-166,Rose,#FFFFFF,Cut Flower,73.0,12,2025-12-18,10,80
-167,Tulip,#FF00FF,Arrangement,60.0,12,2025-12-25,12,80
-168,Tulip,#800080,Potted Plant,123.0,12,2025-12-01,12,80
-169,Rose,#FFFFFF,Cut Flower,23.0,1,2025-12-25,21,80
-170,Rose,#FFFFFF,Cut Flower,23.0,0,2025-12-25,21,80

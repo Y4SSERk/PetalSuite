@@ -48,12 +48,46 @@ PetalSuite is engineered using a strict **Layered Architecture** (Clean Architec
 
 ---
 
-## ⚙️ Quick Start
+## 🛠️ Prerequisites
 
-### 1. Prerequisites
-- **Java JDK 17** installed and configured.
-- **MySQL Server** running (default: `localhost:3306`).
-- A database named `florist_db`.
+Before you begin, ensure you have the following installed:
+- **Java JDK 17** (or higher)
+- **MySQL Server 8.0+**
+- **Maven** (optional, recommended for first-time dependency resolution)
+
+---
+
+## 🚀 Getting Started (Fastest Way)
+
+1.  **Clone the Repository**:
+    ```bash
+    git clone https://github.com/Y4SSERk/PetalSuite.git
+    cd PetalSuite
+    ```
+
+2.  **Database Setup**:
+    - Ensure your MySQL server is running.
+    - Create a database named `florist_db`.
+    - *Note: The application will automatically create the tables on first launch.*
+
+3.  **One-Click Launch**:
+    - Double-click **`START.bat`** in the root folder.
+    - *This will identify missing jars, compile the code, and launch the application!*
+
+---
+
+## 🔧 Developer Commands
+
+If you prefer manual control or want to resolve dependencies first:
+
+```powershell
+# Resolve dependencies (Run once if START.bat shows missing jars)
+mvn dependency:resolve
+
+# Manual Build & Run
+.\build.ps1  # Compile and sync resources
+.\run.ps1    # Launch the NexaVerse UI
+```
 
 ### 2. Database Setup
 The application features **Self-Healing Schema Support**. On first launch, it will automatically:
@@ -66,13 +100,11 @@ The application features **Self-Healing Schema Support**. On first launch, it wi
 ### 3. Running the Application
 The project includes pre-configured automation scripts for Windows:
 
-#### **Via Batch Script (Standard)**
-Double-click `run.bat` or execute in terminal:
-```powershell
-.\run.bat
-```
+#### **One-Click Startup (Recommended)**
+Double-click `START.bat` in the root folder. This automatically handles the build process (first time) and launches the UI.
 
-#### **Via PowerShell (Developer)**
+#### **Direct Launch (Developer)**
+If you have already built the project, you can run directly via PowerShell:
 ```powershell
 .\run.ps1
 ```

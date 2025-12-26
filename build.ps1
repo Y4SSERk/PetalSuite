@@ -1,13 +1,32 @@
-$jfx = "C:\Users\yasse\.m2\repository\org\openjfx"
-$mysql = "C:\Users\yasse\.m2\repository\com\mysql\mysql-connector-j\9.1.0\mysql-connector-j-9.1.0.jar"
+$userProfile = [System.Environment]::GetEnvironmentVariable("USERPROFILE")
+$jfx = "$userProfile\.m2\repository\org\openjfx"
+$mysql = "$userProfile\.m2\repository\com\mysql\mysql-connector-j\9.1.0\mysql-connector-j-9.1.0.jar"
 
-# Gather all JavaFX jars from the repo for module path
-$jfxJars = Get-ChildItem $jfx -Recurse -Filter "*-win.jar" | ForEach-Object { $_.FullName } | Select-Object -Unique
+# Detect Java path
+$javacExe = "javac.exe"
+
+if (Test-Path "$env:JAVA_HOME\bin\javac.exe") {
+    $javacExe = "$env:JAVA_HOME\bin\javac.exe"
+}
+
+# Gather all JavaFX jars from the repo for module path (Targeting 17.0.2)
+$jfxJars = Get-ChildItem -Path "$jfx\*\17.0.2" -Recurse -Filter "*-win.jar" -ErrorAction SilentlyContinue | ForEach-Object { $_.FullName } | Select-Object -Unique
+
+if ($jfxJars.Count -lt 4) {
+    Write-Host "Error: Could not find JavaFX 17.0.2 jars in $jfx." -ForegroundColor Yellow
+    Write-Host "Please run 'mvn dependency:resolve' or ensure dependencies are in your local .m2 repo." -ForegroundColor Cyan
+    exit 1
+}
 $modulePath = $jfxJars -join ";"
+
+# Create build directory
+if (!(Test-Path "target\classes\fxml")) {
+    New-Item -ItemType Directory -Path "target\classes\fxml" -Force | Out-Null
+}
 
 # Compile
 Write-Host "Compiling..."
-& "C:\Program Files\Eclipse Adoptium\jdk-17.0.16.8-hotspot\bin\javac.exe" `
+& $javacExe `
     --module-path "$modulePath" `
     --add-modules "javafx.controls,javafx.fxml" `
     -cp "target\classes;$mysql" `
