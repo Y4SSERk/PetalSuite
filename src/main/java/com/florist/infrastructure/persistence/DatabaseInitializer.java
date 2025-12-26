@@ -1,4 +1,4 @@
-package com.florist.dao;
+package com.florist.infrastructure.persistence;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -7,14 +7,12 @@ import java.sql.Connection;
 import java.sql.Statement;
 
 /**
- * Utility class to initialize the SQLite database from schema.sql
+ * Utility class to initialize the MySQL database from schema.sql.
  */
 public class DatabaseInitializer {
 
     public static void initializeDatabase() {
         try {
-            System.out.println("Initializing database from schema.sql...");
-
             Connection conn = DatabaseConnection.getConnection();
             Statement stmt = conn.createStatement();
 
@@ -30,14 +28,12 @@ public class DatabaseInitializer {
             String line;
 
             while ((line = reader.readLine()) != null) {
-                // Skip comments and empty lines
                 if (line.trim().startsWith("--") || line.trim().isEmpty()) {
                     continue;
                 }
                 sql.append(line).append("\n");
             }
 
-            // Split by semicolon and execute each statement
             String[] statements = sql.toString().split(";");
             for (String statement : statements) {
                 if (!statement.trim().isEmpty()) {
@@ -48,11 +44,8 @@ public class DatabaseInitializer {
             reader.close();
             stmt.close();
 
-            System.out.println("✓ Database initialized successfully!");
-
         } catch (Exception e) {
-            System.err.println("Error initializing database: " + e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException("Failed to initialize database", e);
         }
     }
 }

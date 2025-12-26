@@ -11,6 +11,7 @@ public class Sale {
     private LocalDate saleDate;
     private int flowerId;
     private int quantitySold;
+    private double unitPrice;
     private double totalPrice;
     private String customerName;
 
@@ -34,10 +35,8 @@ public class Sale {
 
     /**
      * Calculates the total price based on unit price and quantity.
-     * 
-     * @param unitPrice the price per unit
      */
-    public void calculateTotal(double unitPrice) {
+    public void calculateTotal() {
         this.totalPrice = unitPrice * quantitySold;
     }
 
@@ -72,6 +71,14 @@ public class Sale {
 
     public void setQuantitySold(int quantitySold) {
         this.quantitySold = quantitySold;
+    }
+
+    public double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
     public double getTotalPrice() {

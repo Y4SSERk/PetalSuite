@@ -1,122 +1,91 @@
-# Florist Management System
+# PetalSuite 🌸
 
-Application Java de gestion de boutique de fleurs avec JavaFX et MySQL.
+**PetalSuite** is a premium, high-performance management ecosystem tailored for modern florists. Built with a focus on data integrity, real-time monitoring, and a state-of-the-art user experience, it empowers flower shops to scale operations efficiently.
 
-## 📋 Description
+---
 
-Système complet de gestion pour une boutique de fleurs incluant:
-- 🌸 Gestion des fleurs (stock, prix, fraîcheur)
-- 📦 Gestion des fournisseurs
-- 💰 Enregistrement des ventes
-- ⚠️ Système d'alertes (stock faible, expiration)
-- 📊 Tableau de bord avec statistiques
+## 🚀 Core Features
 
-## 🛠️ Technologies
+### 📦 Dynamic Inventory Management
+- **Freshness Tracking**: Automated calculation of flower shelf life with real-time freshness percentages.
+- **Smart Stock Control**: Intelligent monitoring that identifies low-stock conditions before they impact sales.
+- **Supplier Integration**: Seamlessly link inventory to global or local suppliers.
 
-- **Java 17**
-- **JavaFX** - Interface graphique
-- **MySQL** - Base de données
-- **Maven** - Gestion de dépendances
-- **JDBC** - Connexion base de données
+### 💰 Transactional Sales Ecosystem
+- **Instant Processing**: Rapid sale recording with automatic stock reconciliation.
+- **Transactional Integrity**: Ensures that every sale is atomic—stock updates only happen if the sale is successfully recorded.
+- **Customer Awareness**: Track sales by customer name for personalized service.
 
-## 📦 Prérequis
+### ⚠️ Automated Alert Intelligence
+- **Severity-Based Alerts**: Distinguishes between critical (`DANGER`) and warning (`WARNING`) states.
+- **Dynamic Re-calculation**: Manual and automated sync to ensure alert accuracy.
+- **Row-Level Visuals**: Immediate visual feedback within data tables to highlight urgent issues.
 
-- Java JDK 17 ou supérieur
-- Maven 3.6+
-- MySQL 8.0+ (ou XAMPP avec MySQL)
-- Scene Builder (optionnel, pour éditer les FXML)
+### 🛠️ Automated Operations
+- **Auto-Backup System**: Scheduled data backups to CSV format every 30 minutes.
+- **Background Monitoring**: Continuous health checks for stock and expirations without impacting UI performance.
 
-## ⚙️ Configuration
+---
 
-1. **Cloner le projet**
-```bash
-git clone <votre-url-github>
-cd florist-management
+## 🏗️ Technical Architecture
+
+PetalSuite is engineered using a strict **Layered Architecture** (Clean Architecture principles), ensuring scalability and testability:
+
+- **Presentation Layer**: JavaFX-based UI with MVC controllers.
+- **Application Layer**: Business orchestration via Service layers and DTO/Validation logic.
+- **Domain Layer**: Core business entities and Repository abstractions.
+- **Infrastructure Layer**: MySQL persistence, Repository implementations, and connection pooling.
+
+---
+
+## 🛠️ Technology Stack
+
+- **Platform**: Java 17 (OpenJDK)
+- **UI Framework**: JavaFX (OpenJFX 17)
+- **Database**: MySQL 8.0+
+- **Build Tool**: Maven (optional) / Custom PowerShell Automation
+- **Design System**: NexaVerse (Custom Vanilla CSS)
+
+---
+
+## ⚙️ Quick Start
+
+### 1. Prerequisites
+- **Java JDK 17** installed and configured.
+- **MySQL Server** running (default: `localhost:3306`).
+- A database named `florist_db`.
+
+### 2. Database Setup
+The application features **Self-Healing Schema Support**. On first launch, it will automatically:
+1. Initialize tables from the bundled `schema.sql`.
+2. Apply necessary migrations (e.g., severity columns).
+
+> [!NOTE]
+> Database connection settings can be adjusted in `com.florist.infrastructure.persistence.DatabaseConnection`.
+
+### 3. Running the Application
+The project includes pre-configured automation scripts for Windows:
+
+#### **Via Batch Script (Standard)**
+Double-click `run.bat` or execute in terminal:
+```powershell
+.\run.bat
 ```
 
-2. **Configurer MySQL**
-   - Démarrer MySQL (XAMPP ou service MySQL)
-   - Créer la base de données:
-```bash
-mysql -u root -e "CREATE DATABASE florist_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-mysql -u root florist_db < src/main/resources/schema.sql
+#### **Via PowerShell (Developer)**
+```powershell
+.\run.ps1
 ```
 
-3. **Configuration de connexion**
-   - Modifier `src/main/java/com/florist/dao/DatabaseConnection.java`
-   - Ajuster USER et PASSWORD si nécessaire
+---
 
-## 🚀 Lancement
+## 🎨 Design Philosophy: NexaVerse
 
-```bash
-mvn clean compile
-mvn javafx:run
-```
+PetalSuite features the **NexaVerse** design system—a modern, high-contrast theme focused on usability and aesthetics:
+- **Palette**: Deep Crimson and Rose accents on a clean, light backdrop.
+- **Typography**: Focused on readability using `Inter` and `Segoe UI`.
+- **Interaction**: Premium micro-animations and intuitive hover states (High-visibility text contrast).
 
-Ou pour tester la connexion:
-```bash
-mvn compile exec:java -Dexec.mainClass="com.florist.TestConnection"
-```
+---
 
-## 📁 Structure du Projet
-
-```
-src/
-├── main/
-│   ├── java/com/florist/
-│   │   ├── MainApp.java           # Point d'entrée
-│   │   ├── controller/            # Contrôleurs JavaFX
-│   │   ├── dao/                   # Data Access Objects
-│   │   ├── model/                 # Entités métier
-│   │   └── service/               # Logique métier
-│   └── resources/
-│       ├── fxml/                  # Interfaces FXML
-│       ├── css/                   # Styles CSS
-│       └── schema.sql             # Schéma base de données
-```
-
-## 💰 Devise
-
-Le système utilise le **Dirham marocain (MAD)**.
-Taux de conversion appliqué: 1 EUR = 11 MAD
-
-## 🔧 Fonctionnalités
-
-### Gestion des Fleurs
-- Ajout, modification, suppression
-- Suivi du stock en temps réel
-- Gestion de la fraîcheur
-- Association aux fournisseurs
-
-### Gestion des Ventes
-- Enregistrement rapide des ventes
-- Calcul automatique du total
-- Historique complet
-- Mise à jour automatique du stock
-
-### Tableau de Bord
-- Statistiques en temps réel
-- Vue d'ensemble des ventes
-- Alertes actives
-- Graphiques de performance
-
-### Système d'Alertes
-- Stock faible (seuil: 20 unités)
-- Fleurs expirées
-- Notifications automatiques
-
-## 📸 Captures d'écran
-
-*(Ajoutez vos captures d'écran ici)*
-
-## 👥 Auteur
-
-Développé avec ❤️ par [Votre Nom]
-
-## 📄 Licence
-
-Ce projet est sous licence [MIT/Apache/etc.] - voir le fichier LICENSE pour plus de détails.
-
-## 🤝 Contribution
-
-Les contributions sont les bienvenues! N'hésitez pas à ouvrir une issue ou un pull request.
+**Developed with precision by Antigravity**

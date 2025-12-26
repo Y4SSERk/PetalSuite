@@ -9,100 +9,62 @@
             fx:controller="com.florist.controller.SaleFormController"
             prefHeight="500.0" prefWidth="600.0" styleClass="root">
     
-    <!-- Top - Header -->
     <top>
-        <VBox styleClass="header">
-            <padding>
-                <Insets top="15" right="20" bottom="15" left="20"/>
-            </padding>
-            <Label text="Enregistrer une Vente" styleClass="title">
-                <font><Font name="System Bold" size="24"/></font>
-            </Label>
+        <VBox styleClass="content-header">
+            <Label text="New Transaction" styleClass="title"/>
         </VBox>
     </top>
     
-    <!-- Center - Form -->
     <center>
-        <VBox spacing="20" styleClass="form-panel">
+        <HBox alignment="CENTER" fillHeight="false">
             <padding>
-                <Insets top="30" right="40" bottom="30" left="40"/>
+                <Insets top="20" right="0" bottom="0" left="0"/>
             </padding>
-            
-            <GridPane hgap="15" vgap="20">
-                <columnConstraints>
-                    <ColumnConstraints minWidth="150" prefWidth="150"/>
-                    <ColumnConstraints minWidth="300" prefWidth="350"/>
-                </columnConstraints>
+            <VBox spacing="24" prefWidth="500" styleClass="card">
+                <Label text="SALE DETAILS" styleClass="card-title"/>
                 
-                <Label text="Fleur:" GridPane.rowIndex="0" GridPane.columnIndex="0">
-                    <font><Font size="14"/></font>
-                </Label>
-                <ComboBox fx:id="flowerComboBox" promptText="Sélectionner une fleur..." 
-                          GridPane.rowIndex="0" GridPane.columnIndex="1" 
-                          prefWidth="350" onAction="#handleFlowerSelection"/>
+                <GridPane hgap="16" vgap="20">
+                    <columnConstraints>
+                        <ColumnConstraints minWidth="120" prefWidth="150" hgrow="NEVER"/>
+                        <ColumnConstraints hgrow="ALWAYS"/>
+                    </columnConstraints>
+                    
+                    <Label text="Flower" styleClass="label" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                    <ComboBox fx:id="flowerComboBox" promptText="Select a flower..." 
+                              GridPane.rowIndex="0" GridPane.columnIndex="1" 
+                              maxWidth="Infinity" onAction="#handleFlowerSelection" styleClass="combo-box"/>
+                    
+                    <Label text="Unit Price" styleClass="label" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    <Label fx:id="unitPriceLabel" text="0.00 MAD" 
+                           GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="value-label" style="-fx-font-weight: bold;"/>
+                    
+                    <Label text="Available Stock" styleClass="label" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                    <Label fx:id="availableStockLabel" text="0" 
+                           GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="value-label"/>
+                    
+                    <Label text="Quantity Sold" styleClass="label" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                    <TextField fx:id="quantityField" promptText="Enter quantity..." 
+                               GridPane.rowIndex="3" GridPane.columnIndex="1"
+                               onKeyReleased="#handleQuantityChange" styleClass="text-field"/>
+                    
+                    <Label text="Customer Name" styleClass="label" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                    <TextField fx:id="customerNameField" promptText="Name (optional)" 
+                               GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="text-field"/>
+                    
+                    <Separator GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2" style="-fx-padding: 10 0 10 0;"/>
+                    
+                    <Label text="Grand Total" styleClass="label" style="-fx-font-weight: 700; -fx-font-size: 16px;" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+                    <Label fx:id="totalPriceLabel" text="0.00 MAD" 
+                           GridPane.rowIndex="6" GridPane.columnIndex="1" style="-fx-font-size: 24px; -fx-font-weight: 800; -fx-text-fill: #e63946;"/>
+                </GridPane>
                 
-                <Label text="Prix unitaire:" GridPane.rowIndex="1" GridPane.columnIndex="0">
-                    <font><Font size="14"/></font>
-                </Label>
-                <Label fx:id="unitPriceLabel" text="0.00 MAD" 
-                       GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="price-label">
-                    <font><Font size="16" /></font>
-                </Label>
-                
-                <Label text="Stock disponible:" GridPane.rowIndex="2" GridPane.columnIndex="0">
-                    <font><Font size="14"/></font>
-                </Label>
-                <Label fx:id="availableStockLabel" text="0" 
-                       GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="stock-label">
-                    <font><Font size="16"/></font>
-                </Label>
-                
-                <Label text="Quantité vendue:" GridPane.rowIndex="3" GridPane.columnIndex="0">
-                    <font><Font size="14"/></font>
-                </Label>
-                <TextField fx:id="quantityField" promptText="Quantité" 
-                           GridPane.rowIndex="3" GridPane.columnIndex="1"
-                           onKeyReleased="#handleQuantityChange"/>
-                
-                <Label text="Nom du client:" GridPane.rowIndex="4" GridPane.columnIndex="0">
-                    <font><Font size="14"/></font>
-                </Label>
-                <TextField fx:id="customerNameField" promptText="Nom (optionnel)" 
-                           GridPane.rowIndex="4" GridPane.columnIndex="1"/>
-                
-                <Separator GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
-                
-                <Label text="Total:" GridPane.rowIndex="6" GridPane.columnIndex="0">
-                    <font><Font name="System Bold" size="16"/></font>
-                </Label>
-                <Label fx:id="totalPriceLabel" text="0.00 MAD" 
-                       GridPane.rowIndex="6" GridPane.columnIndex="1" styleClass="total-label">
-                    <font><Font name="System Bold" size="20"/></font>
-                </Label>
-            </GridPane>
-            
-            <HBox spacing="15" alignment="CENTER">
-                <padding>
-                    <Insets top="20"/>
-                </padding>
-                <Button fx:id="saveSaleBtn" text="✅ Enregistrer la Vente" 
-                        onAction="#handleSaveSale" styleClass="success-button">
-                    <font><Font size="14"/></font>
-                </Button>
-                <Button fx:id="clearBtn" text="🔄 Effacer" onAction="#handleClear">
-                    <font><Font size="14"/></font>
-                </Button>
-            </HBox>
-        </VBox>
+                <HBox spacing="16" alignment="CENTER_RIGHT">
+                    <Button fx:id="clearBtn" text="Clear" onAction="#handleClear" styleClass="button-ghost" prefWidth="120"/>
+                    <Button fx:id="saveSaleBtn" text="Complete Sale" 
+                            onAction="#handleSaveSale" styleClass="button-primary" prefWidth="200"/>
+                </HBox>
+            </VBox>
+        </HBox>
     </center>
     
-    <!-- Bottom - Back Button -->
-    <bottom>
-        <HBox spacing="10" alignment="CENTER_LEFT" styleClass="bottom-bar">
-            <padding>
-                <Insets top="10" right="20" bottom="10" left="20"/>
-            </padding>
-            <Button fx:id="backBtn" text="← Retour au Menu" onAction="#handleBack"/>
-        </HBox>
-    </bottom>
 </BorderPane>

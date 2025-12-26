@@ -1,10 +1,14 @@
 package com.florist.model;
 
 import java.time.LocalDate;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import com.florist.application.service.FreshnessService;
 
 /**
  * Flower entity representing a flower in the inventory.
- * Contains information about the flower including stock, pricing, and freshness.
+ * Contains details such as name, color, quantity, price, and calculated
+ * freshness.
  */
 public class Flower {
     private int id;
@@ -16,15 +20,18 @@ public class Flower {
     private LocalDate arrivalDate;
     private int freshnessDays;
     private int supplierId;
-    
+
+    // UI State
+    private final BooleanProperty selected = new SimpleBooleanProperty(false);
+
     // For display purposes when joining with supplier
     private String supplierName;
 
-    // Constructors
-    public Flower() {}
+    public Flower() {
+    }
 
-    public Flower(int id, String name, String color, String category, double price, 
-                  int quantity, LocalDate arrivalDate, int freshnessDays, int supplierId) {
+    public Flower(int id, String name, String color, String category, double price,
+            int quantity, LocalDate arrivalDate, int freshnessDays, int supplierId) {
         this.id = id;
         this.name = name;
         this.color = color;
@@ -36,8 +43,22 @@ public class Flower {
         this.supplierId = supplierId;
     }
 
+    // UI Selection Property
+    public BooleanProperty selectedProperty() {
+        return selected;
+    }
+
+    public boolean isSelected() {
+        return selected.get();
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected.set(selected);
+    }
+
     /**
      * Calculates the expiry date based on arrival date and freshness days.
+     * 
      * @return the date when the flower will expire
      */
     public LocalDate getExpiryDate() {
@@ -47,40 +68,8 @@ public class Flower {
         return arrivalDate.plusDays(freshnessDays);
     }
 
-    /**
-     * Checks if the flower stock is below the specified threshold.
-     * @param threshold the minimum stock level
-     * @return true if stock is low, false otherwise
-     */
-    public boolean isLowStock(int threshold) {
-        return quantity < threshold;
-    }
-
-    /**
-     * Reduces the stock by the specified amount.
-     * @param amount the amount to reduce
-     * @throws IllegalArgumentException if amount is negative or exceeds current stock
-     */
-    public void reduceStock(int amount) {
-        if (amount < 0) {
-            throw new IllegalArgumentException("Amount cannot be negative");
-        }
-        if (amount > quantity) {
-            throw new IllegalArgumentException("Insufficient stock. Available: " + quantity);
-        }
-        this.quantity -= amount;
-    }
-
-    /**
-     * Checks if the flower has expired.
-     * @return true if expired, false otherwise
-     */
-    public boolean isExpired() {
-        LocalDate expiryDate = getExpiryDate();
-        return expiryDate != null && !expiryDate.isAfter(LocalDate.now());
-    }
-
     // Getters and Setters
+
     public int getId() {
         return id;
     }
@@ -159,6 +148,32 @@ public class Flower {
 
     public void setSupplierName(String supplierName) {
         this.supplierName = supplierName;
+    }
+
+    public String getFreshnessLabel() {
+        if (arrivalDate != null) {
+            // Use FreshnessService to get the label
+            return FreshnessService.getFreshnessLabel(arrivalDate, freshnessDays);
+        }
+        return "Unknown";
+    }
+
+    // Helper to get raw percentage for progress bars if needed
+    public double getFreshnessPercentage() {
+        if (arrivalDate != null) {
+            return FreshnessService.calculateFreshnessPercentage(arrivalDate, freshnessDays);
+        }
+        return 0.0;
+    }
+
+    public void reduceStock(int amount) {
+        if (amount > 0 && this.quantity >= amount) {
+            this.quantity -= amount;
+        }
+    }
+
+    public boolean isLowStock(int threshold) {
+        return this.quantity < threshold;
     }
 
     @Override

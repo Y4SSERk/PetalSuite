@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS stock_alerts (
     id INT AUTO_INCREMENT PRIMARY KEY,
     flower_id INT NOT NULL,
     alert_type VARCHAR(20) NOT NULL COMMENT 'LOW_STOCK or EXPIRY',
+    severity VARCHAR(10) DEFAULT 'WARNING' COMMENT 'DANGER or WARNING',
     message TEXT NOT NULL,
     generated_date DATE NOT NULL,
     resolved BOOLEAN DEFAULT FALSE,
@@ -72,18 +73,18 @@ CREATE TABLE IF NOT EXISTS stock_alerts (
 -- Insert sample data for testing
 
 -- Sample suppliers
-INSERT INTO suppliers (name, phone, email) VALUES
-('Fleurs de Paris', '01-23-45-67-89', 'contact@fleursdeparts.fr'),
-('Garden Wholesale', '01-98-76-54-32', 'sales@gardenwholesale.fr'),
-('Tropical Imports', '01-55-44-33-22', 'info@tropicalimports.fr')
-ON DUPLICATE KEY UPDATE name=name;
+-- INSERT INTO suppliers (name, phone, email) VALUES
+-- ('Fleurs de Paris', '01-23-45-67-89', 'contact@fleursdeparts.fr'),
+-- ('Garden Wholesale', '01-98-76-54-32', 'sales@gardenwholesale.fr'),
+-- ('Tropical Imports', '01-55-44-33-22', 'info@tropicalimports.fr')
+-- ON DUPLICATE KEY UPDATE name=name;
 
 -- Sample flowers
-INSERT INTO flowers (name, color, category, price, quantity, arrival_date, freshness_days, supplier_id) VALUES
-('Rose Rouge', 'Rouge', 'Rose', 3.50, 100, CURDATE(), 7, 1),
-('Tulipe Jaune', 'Jaune', 'Tulipe', 2.80, 75, CURDATE(), 5, 1),
-('Orchidée Blanche', 'Blanc', 'Orchidée', 15.00, 25, CURDATE(), 14, 3),
-('Lys Rose', 'Rose', 'Lys', 6.50, 50, CURDATE(), 10, 2),
-('Marguerite', 'Blanc', 'Marguerite', 1.50, 120, CURDATE(), 6, 2),
-('Tournesol', 'Jaune', 'Tournesol', 4.00, 60, DATE_SUB(CURDATE(), INTERVAL 5 DAY), 7, 1)
-ON DUPLICATE KEY UPDATE name=name;
+-- INSERT INTO flowers (name, color, category, price, quantity, arrival_date, freshness_days, supplier_id) VALUES
+-- ('Rose Rouge', 'Rouge', 'Rose', 3.50, 100, CURDATE(), 7, 1),
+-- ('Tulipe Jaune', 'Jaune', 'Tulipe', 2.80, 75, CURDATE(), 5, 1),
+-- ('Orchidée Blanche', 'Blanc', 'Orchidée', 15.00, 25, CURDATE(), 14, 3),
+-- ('Lys Rose', 'Rose', 'Lys', 6.50, 50, CURDATE(), 10, 2),
+-- ('Marguerite', 'Blanc', 'Marguerite', 1.50, 120, CURDATE(), 6, 2),
+-- ('Tournesol', 'Jaune', 'Tournesol', 4.00, 60, DATE_SUB(CURDATE(), INTERVAL 5 DAY), 7, 1)
+-- ON DUPLICATE KEY UPDATE name=name;

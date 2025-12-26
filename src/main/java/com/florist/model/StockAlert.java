@@ -9,19 +9,21 @@ import java.time.LocalDate;
 public class StockAlert {
     private int id;
     private int flowerId;
-    private String alertType;  // "LOW_STOCK" or "EXPIRY"
+    private String alertType; // "LOW_STOCK" or "EXPIRY"
+    private String severity; // "DANGER" or "WARNING"
     private String message;
     private LocalDate generatedDate;
     private boolean resolved;
-    
+
     // For display purposes
     private String flowerName;
 
     // Constructors
-    public StockAlert() {}
+    public StockAlert() {
+    }
 
-    public StockAlert(int id, int flowerId, String alertType, String message, 
-                      LocalDate generatedDate, boolean resolved) {
+    public StockAlert(int id, int flowerId, String alertType, String message,
+            LocalDate generatedDate, boolean resolved) {
         this.id = id;
         this.flowerId = flowerId;
         this.alertType = alertType;
@@ -92,6 +94,14 @@ public class StockAlert {
 
     public void setFlowerName(String flowerName) {
         this.flowerName = flowerName;
+    }
+
+    public String getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(String severity) {
+        this.severity = severity;
     }
 
     @Override

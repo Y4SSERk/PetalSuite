@@ -9,128 +9,65 @@
             fx:controller="com.florist.controller.DashboardController"
             prefHeight="600.0" prefWidth="800.0" styleClass="root">
     
-    <!-- Top - Header -->
     <top>
-        <VBox styleClass="header">
-            <padding>
-                <Insets top="15" right="20" bottom="15" left="20"/>
-            </padding>
-            <Label text="Tableau de Bord" styleClass="title">
-                <font><Font name="System Bold" size="24"/></font>
-            </Label>
-            <Label text="Vue d'ensemble de votre boutique" styleClass="subtitle">
-                <font><Font size="13"/></font>
-            </Label>
+        <VBox styleClass="content-header">
+            <Label text="Overview Dashboard" styleClass="title"/>
         </VBox>
     </top>
     
     <!-- Center - Dashboard Content -->
     <center>
-        <ScrollPane fitToWidth="true" fitToHeight="true">
-            <VBox spacing="30">
+        <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent;">
+            <VBox spacing="24">
                 <padding>
-                    <Insets top="30" right="40" bottom="30" left="40"/>
+                    <Insets top="24" right="32" bottom="24" left="32"/>
                 </padding>
             
             <!-- Statistics Cards -->
-            <GridPane hgap="20" vgap="20">
+            <HBox spacing="16">
                 <!-- Card 1: Total Flowers -->
-                <VBox styleClass="dashboard-card" spacing="10" 
-                      GridPane.rowIndex="0" GridPane.columnIndex="0" 
-                      prefWidth="180" prefHeight="120">
-                    <padding>
-                        <Insets top="15" right="15" bottom="15" left="15"/>
-                    </padding>
-                    <Label text="🌸" styleClass="card-icon">
-                        <font><Font size="32"/></font>
-                    </Label>
-                    <Label text="Total Fleurs" styleClass="card-title">
-                        <font><Font size="12"/></font>
-                    </Label>
-                    <Label fx:id="totalFlowersLabel" text="0" styleClass="card-value">
-                        <font><Font name="System Bold" size="28"/></font>
-                    </Label>
+                <VBox styleClass="card, card-crimson" spacing="8" prefWidth="240" HBox.hgrow="ALWAYS">
+                    <Label text="TOTAL FLOWERS" styleClass="card-title"/>
+                    <Label fx:id="totalFlowersLabel" text="0" styleClass="card-value"/>
                 </VBox>
                 
                 <!-- Card 2: Total Suppliers -->
-                <VBox styleClass="dashboard-card" spacing="10" 
-                      GridPane.rowIndex="0" GridPane.columnIndex="1" 
-                      prefWidth="180" prefHeight="120">
-                    <padding>
-                        <Insets top="15" right="15" bottom="15" left="15"/>
-                    </padding>
-                    <Label text="📦" styleClass="card-icon">
-                        <font><Font size="32"/></font>
-                    </Label>
-                    <Label text="Fournisseurs" styleClass="card-title">
-                        <font><Font size="12"/></font>
-                    </Label>
-                    <Label fx:id="totalSuppliersLabel" text="0" styleClass="card-value">
-                        <font><Font name="System Bold" size="28"/></font>
-                    </Label>
+                <VBox styleClass="card, card-pink" spacing="8" prefWidth="240" HBox.hgrow="ALWAYS">
+                    <Label text="TOTAL SUPPLIERS" styleClass="card-title"/>
+                    <Label fx:id="totalSuppliersLabel" text="0" styleClass="card-value"/>
                 </VBox>
                 
                 <!-- Card 3: Today's Sales -->
-                <VBox styleClass="dashboard-card" spacing="10" 
-                      GridPane.rowIndex="1" GridPane.columnIndex="0" 
-                      prefWidth="180" prefHeight="120">
-                    <padding>
-                        <Insets top="15" right="15" bottom="15" left="15"/>
-                    </padding>
-                    <Label text="💰" styleClass="card-icon">
-                        <font><Font size="32"/></font>
-                    </Label>
-                    <Label text="Ventes Aujourd'hui" styleClass="card-title">
-                        <font><Font size="12"/></font>
-                    </Label>
-                    <Label fx:id="todaySalesLabel" text="0" styleClass="card-value">
-                        <font><Font name="System Bold" size="28"/></font>
-                    </Label>
+                <VBox styleClass="card, card-light-pink" spacing="8" prefWidth="240" HBox.hgrow="ALWAYS">
+                    <Label text="TODAY'S SALES" styleClass="card-title"/>
+                    <Label fx:id="todaySalesLabel" text="0" styleClass="card-value"/>
                 </VBox>
                 
                 <!-- Card 4: Active Alerts -->
-                <VBox styleClass="dashboard-card alert-card" spacing="10" 
-                      GridPane.rowIndex="1" GridPane.columnIndex="1" 
-                      prefWidth="180" prefHeight="120">
-                    <padding>
-                        <Insets top="15" right="15" bottom="15" left="15"/>
-                    </padding>
-                    <Label text="⚠️" styleClass="card-icon">
-                        <font><Font size="32"/></font>
-                    </Label>
-                    <Label text="Alertes Actives" styleClass="card-title">
-                        <font><Font size="12"/></font>
-                    </Label>
-                    <Label fx:id="activeAlertsLabel" text="0" styleClass="card-value">
-                        <font><Font name="System Bold" size="28"/></font>
-                    </Label>
+                <VBox styleClass="card, card-mint" spacing="8" prefWidth="240" HBox.hgrow="ALWAYS">
+                    <Label text="ACTIVE ALERTS" styleClass="card-title"/>
+                    <Label fx:id="activeAlertsLabel" text="0" styleClass="card-value"/>
                 </VBox>
-            </GridPane>
+            </HBox>
             
             <!-- Recent Sales Table -->
-            <VBox spacing="100" VBox.vgrow="ALWAYS">
-                <Label text="Ventes Récentes" styleClass="section-title">
-                    <font><Font name="System Bold" size="16"/></font>
-                </Label>
+            <VBox spacing="12" VBox.vgrow="ALWAYS">
+                <Label text="Recent Sales" styleClass="section-title"/>
                 
-                <ScrollPane fitToWidth="true" fitToHeight="true" prefHeight="600" style="-fx-background-color: transparent;">
-                    <TableView fx:id="salesTableView" prefHeight="580" style="-fx-font-size: 13px;">
+                <ScrollPane fitToWidth="true" fitToHeight="true" prefHeight="300" style="-fx-background-color: transparent;">
+                    <TableView fx:id="salesTableView" prefHeight="280">
                         <columns>
-                            <TableColumn fx:id="saleDateColumn" text="Date" prefWidth="120" minWidth="100"/>
-                            <TableColumn fx:id="saleFlowerNameColumn" text="Fleur" prefWidth="180" minWidth="150"/>
-                            <TableColumn fx:id="saleFlowerCategoryColumn" text="Catégorie" prefWidth="140" minWidth="120"/>
-                            <TableColumn fx:id="saleQuantityColumn" text="Quantité" prefWidth="100" minWidth="80"/>
-                            <TableColumn fx:id="salePriceColumn" text="Prix Total (MAD)" prefWidth="150" minWidth="130"/>
-                            <TableColumn fx:id="saleCustomerColumn" text="Client" prefWidth="180" minWidth="120"/>
+                            <TableColumn fx:id="saleDateColumn" text="Date" prefWidth="120"/>
+                            <TableColumn fx:id="saleFlowerNameColumn" text="Flower" prefWidth="180"/>
+                            <TableColumn fx:id="saleFlowerCategoryColumn" text="Category" prefWidth="140"/>
+                            <TableColumn fx:id="saleQuantityColumn" text="Quantity" prefWidth="100"/>
+                            <TableColumn fx:id="salePriceColumn" text="Total Price (MAD)" prefWidth="150"/>
+                            <TableColumn fx:id="saleCustomerColumn" text="Customer" prefWidth="180"/>
                         </columns>
                         <placeholder>
-                            <VBox alignment="CENTER" spacing="10" style="-fx-padding: 40px;">
-                                <Label text="📊 Aucune vente enregistrée" style="-fx-text-fill: #666; -fx-font-weight: bold;">
-                                    <font><Font size="24"/></font>
-                                </Label>
-                                <Label text="Les ventes apparaîtront ici une fois enregistrées" style="-fx-text-fill: #999;">
-                                    <font><Font size="14"/></font>
-                                </Label>
+                            <VBox alignment="CENTER" spacing="8">
+                                <Label text="No sales recorded" styleClass="label" style="-fx-font-weight: bold;"/>
+                                <Label text="Sales will appear here once recorded" styleClass="label" style="-fx-text-fill: -color-text-muted;"/>
                             </VBox>
                         </placeholder>
                     </TableView>
@@ -138,33 +75,20 @@
             </VBox>
             
             <!-- Actions -->
-            <VBox spacing="15">
-                <Label text="Actions Rapides" styleClass="section-title">
-                    <font><Font name="System Bold" size="16"/></font>
-                </Label>
+            <VBox spacing="12">
+                <Label text="Quick Actions" styleClass="section-title"/>
                 
-                <HBox spacing="15">
-                    <Button fx:id="checkExpiryBtn" text="🔍 Vérifier les Expirations" 
-                            onAction="#handleCheckExpiration" styleClass="action-button">
-                        <font><Font size="14"/></font>
-                    </Button>
-                    <Button fx:id="refreshBtn" text="🔄 Actualiser les Statistiques" 
-                            onAction="#handleRefresh" styleClass="action-button">
-                        <font><Font size="14"/></font>
-                    </Button>
+                <HBox spacing="12">
+                    <Button fx:id="checkExpiryBtn" text="Check Expirations" 
+                            onAction="#handleCheckExpiration" styleClass="button"/>
+                    <Button fx:id="refreshBtn" text="Refresh Statistics" 
+                            onAction="#handleRefresh" styleClass="button"/>
+                    <Button fx:id="exportBtn" text="Export Data" 
+                            onAction="#handleExport" styleClass="button"/>
                 </HBox>
             </VBox>
             </VBox>
         </ScrollPane>
     </center>
     
-    <!-- Bottom - Back Button -->
-    <bottom>
-        <HBox spacing="10" alignment="CENTER_LEFT" styleClass="bottom-bar">
-            <padding>
-                <Insets top="10" right="20" bottom="10" left="20"/>
-            </padding>
-            <Button fx:id="backBtn" text="← Retour au Menu" onAction="#handleBack"/>
-        </HBox>
-    </bottom>
 </BorderPane>

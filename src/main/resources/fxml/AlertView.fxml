@@ -9,58 +9,37 @@
             fx:controller="com.florist.controller.AlertViewController"
             prefHeight="600.0" prefWidth="900.0" styleClass="root">
     
-    <!-- Top - Header -->
     <top>
-        <VBox styleClass="header">
-            <padding>
-                <Insets top="15" right="20" bottom="15" left="20"/>
-            </padding>
-            <Label text="Alertes de Stock" styleClass="title">
-                <font><Font name="System Bold" size="24"/></font>
-            </Label>
-            <Label text="Gérez les alertes de stock faible et d'expiration" styleClass="subtitle">
-                <font><Font size="13"/></font>
-            </Label>
+        <VBox styleClass="content-header">
+            <Label text="System Notifications" styleClass="title"/>
         </VBox>
     </top>
     
     <!-- Center - Table -->
     <center>
-        <VBox spacing="10">
-            <padding>
-                <Insets top="15" right="20" bottom="15" left="20"/>
-            </padding>
-            
+        <VBox spacing="24" styleClass="card">
             <HBox spacing="10" alignment="CENTER_LEFT">
-                <Button fx:id="refreshBtn" text="🔄 Actualiser" onAction="#handleRefresh"/>
-                <Button fx:id="resolveBtn" text="✅ Marquer comme Résolu" 
-                        onAction="#handleResolve" styleClass="success-button"/>
+                <Label text="ACTIVE ALERTS" styleClass="card-title" HBox.hgrow="ALWAYS"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Label fx:id="alertCountLabel" text="0 alertes actives" styleClass="alert-count">
-                    <font><Font size="14"/></font>
-                </Label>
+                <Label fx:id="alertCountLabel" text="0 active alerts" style="-fx-text-fill: #e63946; -fx-font-weight: bold;"/>
+                <Separator orientation="VERTICAL" />
+                <Button fx:id="refreshBtn" text="Refresh" onAction="#handleRefresh" styleClass="button-ghost"/>
+                <Button fx:id="resolveBtn" text="Mark as Resolved" 
+                        onAction="#handleResolve" styleClass="button-primary"/>
             </HBox>
             
             <TableView fx:id="alertTable" VBox.vgrow="ALWAYS">
                 <columns>
                     <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
-                    <TableColumn fx:id="flowerNameColumn" text="Fleur" prefWidth="150"/>
+                    <TableColumn fx:id="flowerNameColumn" text="Flower" prefWidth="150"/>
                     <TableColumn fx:id="alertTypeColumn" text="Type" prefWidth="120"/>
                     <TableColumn fx:id="messageColumn" text="Message" prefWidth="350"/>
                     <TableColumn fx:id="generatedDateColumn" text="Date" prefWidth="110"/>
-                    <TableColumn fx:id="resolvedColumn" text="État" prefWidth="100"/>
+                    <TableColumn fx:id="resolvedColumn" text="Status" prefWidth="100"/>
                 </columns>
             </TableView>
         </VBox>
     </center>
     
     <!-- Bottom - Back Button -->
-    <bottom>
-        <HBox spacing="10" alignment="CENTER_LEFT" styleClass="bottom-bar">
-            <padding>
-                <Insets top="10" right="20" bottom="10" left="20"/>
-            </padding>
-            <Button fx:id="backBtn" text="← Retour au Menu" onAction="#handleBack"/>
-        </HBox>
-    </bottom>
 </BorderPane>

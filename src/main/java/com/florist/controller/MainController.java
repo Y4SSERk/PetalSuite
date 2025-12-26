@@ -2,69 +2,81 @@ package com.florist.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.stage.Stage;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
+import java.io.IOException;
 
-/**
- * Controller for the main menu view.
- * Handles navigation to different sections of the application.
- */
 public class MainController {
 
     @FXML
-    private Label statusLabel;
+    private StackPane contentArea;
+
+    @FXML
+    private Button dashboardBtn;
+    @FXML
+    private Button inventoryBtn;
+    @FXML
+    private Button salesBtn;
+    @FXML
+    private Button suppliersBtn;
+    @FXML
+    private Button alertsBtn;
+
+    private Button activeBtn;
 
     @FXML
     public void initialize() {
-        statusLabel.setText("Bienvenue dans le système de gestion fleuriste");
+        activeBtn = dashboardBtn;
+        showDashboard();
     }
 
     @FXML
-    private void openFlowerManagement() {
-        loadView("/fxml/FlowerManagement.fxml", "Gestion des Fleurs");
+    private void showDashboard() {
+        loadView("/fxml/Dashboard.fxml", dashboardBtn);
     }
 
     @FXML
-    private void openSupplierManagement() {
-        loadView("/fxml/SupplierManagement.fxml", "Gestion des Fournisseurs");
+    private void showInventory() {
+        loadView("/fxml/FlowerManagement.fxml", inventoryBtn);
     }
 
     @FXML
-    private void openSaleForm() {
-        loadView("/fxml/SaleForm.fxml", "Enregistrer une Vente");
+    private void showSales() {
+        loadView("/fxml/SaleForm.fxml", salesBtn);
     }
 
     @FXML
-    private void openDashboard() {
-        loadView("/fxml/Dashboard.fxml", "Tableau de Bord");
+    private void showSuppliers() {
+        loadView("/fxml/SupplierManagement.fxml", suppliersBtn);
     }
 
     @FXML
-    private void openAlerts() {
-        loadView("/fxml/AlertView.fxml", "Alertes de Stock");
+    private void showAlerts() {
+        loadView("/fxml/AlertView.fxml", alertsBtn);
     }
 
-    /**
-     * Loads a new view in the current window.
-     * @param fxmlPath path to the FXML file
-     * @param title window title
-     */
-    private void loadView(String fxmlPath, String title) {
+    private void loadView(String fxmlPath, Button triggerBtn) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-            
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
-            
-            Stage stage = (Stage) statusLabel.getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle(title + " - Florist Management");
-        } catch (Exception e) {
-            System.err.println("Error loading view: " + e.getMessage());
+            Node view = loader.load();
+            contentArea.getChildren().setAll(view);
+
+            // Update UI state
+            if (activeBtn != null) {
+                activeBtn.getStyleClass().remove("nav-button-active");
+            }
+            triggerBtn.getStyleClass().add("nav-button-active");
+            activeBtn = triggerBtn;
+
+        } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void handleLogout() {
+        // Logic for logout if needed, for now just exit or show info
+        System.out.println("Logout requested");
     }
 }

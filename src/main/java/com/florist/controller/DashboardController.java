@@ -1,22 +1,17 @@
 package com.florist.controller;
 
-import com.florist.dao.FlowerDao;
-import com.florist.dao.SaleDao;
-import com.florist.dao.StockAlertDao;
-import com.florist.dao.SupplierDao;
+import com.florist.application.service.AlertService;
+import com.florist.application.service.FlowerService;
+import com.florist.application.service.SaleService;
+import com.florist.application.service.SupplierService;
+import com.florist.config.ServiceFactory;
 import com.florist.model.Sale;
-import com.florist.service.InventoryService;
+import com.florist.application.service.InventoryService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 
 import java.time.LocalDate;
 
@@ -51,35 +46,44 @@ public class DashboardController {
     @FXML
     private TableColumn<Sale, String> saleCustomerColumn;
 
-    private FlowerDao flowerDao;
-    private SupplierDao supplierDao;
-    private SaleDao saleDao;
-    private StockAlertDao alertDao;
+    private FlowerService flowerService;
+    private SupplierService supplierService;
+    private SaleService saleService;
+    private AlertService alertService;
     private InventoryService inventoryService;
 
     @FXML
     public void initialize() {
-        flowerDao = new FlowerDao();
-        supplierDao = new SupplierDao();
-        saleDao = new SaleDao();
-        alertDao = new StockAlertDao();
-        inventoryService = new InventoryService();
+        ServiceFactory factory = ServiceFactory.getInstance();
+        this.flowerService = factory.getFlowerService();
+        this.supplierService = factory.getSupplierService();
+        this.saleService = factory.getSaleService();
+        this.alertService = factory.getAlertService();
+        this.inventoryService = factory.getInventoryService();
 
         setupSalesTable();
         loadStatistics();
         loadSales();
     }
 
-    /**
-     * Sets up the sales table columns.
-     */
     private void setupSalesTable() {
-        saleDateColumn.setCellValueFactory(new PropertyValueFactory<>("saleDate"));
-        saleFlowerNameColumn.setCellValueFactory(new PropertyValueFactory<>("flowerName"));
-        saleFlowerCategoryColumn.setCellValueFactory(new PropertyValueFactory<>("flowerCategory"));
-        saleQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantitySold"));
-        salePriceColumn.setCellValueFactory(new PropertyValueFactory<>("totalPrice"));
-        saleCustomerColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+        saleDateColumn.setCellValueFactory(
+                cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getSaleDate()));
+
+        saleFlowerNameColumn.setCellValueFactory(
+                cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getFlowerName()));
+
+        saleFlowerCategoryColumn.setCellValueFactory(
+                cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getFlowerCategory()));
+
+        saleQuantityColumn.setCellValueFactory(
+                cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getQuantitySold()));
+
+        salePriceColumn.setCellValueFactory(
+                cellData -> new javafx.beans.property.SimpleObjectProperty<>(cellData.getValue().getTotalPrice()));
+
+        saleCustomerColumn.setCellValueFactory(
+                cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getCustomerName()));
 
         // Format price column with MAD
         salePriceColumn.setCellFactory(column -> new javafx.scene.control.TableCell<Sale, Double>() {
@@ -95,101 +99,70 @@ public class DashboardController {
         });
     }
 
-    /**
-     * Loads recent sales (last 10) into the table.
-     */
     private void loadSales() {
         try {
-            System.out.println("DEBUG: Loading sales data...");
-            var sales = saleDao.findAll();
-            System.out.println("DEBUG: Found " + sales.size() + " sales in database");
-
-            // Limit to 10 most recent
-            var recentSales = sales.size() > 10 ? sales.subList(0, 10) : sales;
-            System.out.println("DEBUG: Displaying " + recentSales.size() + " sales");
-
-            if (!recentSales.isEmpty()) {
-                System.out.println("DEBUG: First sale - Flower: " + recentSales.get(0).getFlowerName() +
-                        ", Category: " + recentSales.get(0).getFlowerCategory() +
-                        ", Price: " + recentSales.get(0).getTotalPrice());
-            }
-
+            var sales = saleService.getAllSales();
+            var recentSales = sales.size() > 10 ? sales.subList(sales.size() - 10, sales.size()) : sales;
+            // Reverse order for recent sales
+            java.util.Collections.reverse(recentSales);
             salesTableView.setItems(FXCollections.observableArrayList(recentSales));
-            System.out.println("DEBUG: Sales loaded into table");
         } catch (Exception e) {
-            System.err.println("ERROR loading sales: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    /**
-     * Loads and displays all dashboard statistics.
-     */
     private void loadStatistics() {
-        // Count flowers
-        int flowerCount = flowerDao.findAll().size();
+        int flowerCount = flowerService.getAllFlowers().size();
         totalFlowersLabel.setText(String.valueOf(flowerCount));
 
-        // Count suppliers
-        int supplierCount = supplierDao.findAll().size();
+        int supplierCount = supplierService.getAllSuppliers().size();
         totalSuppliersLabel.setText(String.valueOf(supplierCount));
 
-        // Count today's sales
-        int todaySalesCount = saleDao.countTodaySales();
+        int todaySalesCount = saleService.getTodaySalesCount();
         todaySalesLabel.setText(String.valueOf(todaySalesCount));
 
-        // Count active alerts
-        int activeAlerts = alertDao.countUnresolved();
+        int activeAlerts = alertService.getUnresolvedCount();
         activeAlertsLabel.setText(String.valueOf(activeAlerts));
     }
 
     @FXML
     private void handleCheckExpiration() {
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Vérification d'Expiration");
-        confirm.setHeaderText("Vérifier les expirations?");
-        confirm.setContentText("Cela va scanner toutes les fleurs et générer des alertes pour celles qui ont expiré.");
-
-        if (confirm.showAndWait().get() == javafx.scene.control.ButtonType.OK) {
-            int alertsGenerated = inventoryService.checkAllAlerts();
-
-            showAlert(Alert.AlertType.INFORMATION, "Vérification Terminée",
-                    String.format("Vérification terminée!\n%d nouvelle(s) alerte(s) générée(s).", alertsGenerated));
-
-            loadStatistics(); // Refresh statistics
-        }
+        int alertsGenerated = inventoryService.checkAllAlerts();
+        com.florist.util.NotificationService.showInfo(
+                totalFlowersLabel.getScene().getWindow(),
+                String.format("Check complete. %d new alert(s).", alertsGenerated));
+        loadStatistics();
     }
 
     @FXML
     private void handleRefresh() {
         loadStatistics();
         loadSales();
-        showAlert(Alert.AlertType.INFORMATION, "Actualisation", "Statistiques actualisées!");
+        com.florist.util.NotificationService.showInfo(
+                totalFlowersLabel.getScene().getWindow(), "Statistics refreshed!");
     }
 
     @FXML
-    private void handleBack() {
-        loadMainView();
-    }
-
-    private void showAlert(Alert.AlertType type, String title, String content) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-
-    private void loadMainView() {
+    private void handleExport() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainView.fxml"));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
-            Stage stage = (Stage) totalFlowersLabel.getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle("Menu Principal - Florist Management");
+            com.florist.io.FileExportService export = new com.florist.io.FileExportService();
+            String timestamp = java.time.LocalDateTime.now()
+                    .format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss"));
+            String dir = "exports";
+            new java.io.File(dir).mkdirs();
+
+            export.exportFlowersToCsv(flowerService.getAllFlowers(), dir + "/flowers_" + timestamp + ".csv");
+            export.exportSalesToCsv(saleService.getAllSales(), dir + "/sales_" + timestamp + ".csv");
+            export.exportSuppliersToCsv(supplierService.getAllSuppliers(), dir + "/suppliers_" + timestamp + ".csv");
+
+            com.florist.util.NotificationService.showSuccess(
+                    totalFlowersLabel.getScene().getWindow(),
+                    "Data exported successfully to '" + dir + "' folder!");
+
         } catch (Exception e) {
+            com.florist.util.NotificationService.showError(
+                    totalFlowersLabel.getScene().getWindow(),
+                    "Error during export: " + e.getMessage());
             e.printStackTrace();
         }
     }

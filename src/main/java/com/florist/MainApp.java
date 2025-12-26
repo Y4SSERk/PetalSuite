@@ -1,7 +1,9 @@
 package com.florist;
 
-import com.florist.dao.DatabaseConnection;
-import com.florist.service.InventoryService;
+import com.florist.infrastructure.persistence.DatabaseConnection;
+import com.florist.infrastructure.persistence.DatabaseInitializer;
+import com.florist.config.ServiceFactory;
+import com.florist.threads.BackgroundTaskManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,34 +16,34 @@ import javafx.stage.Stage;
  */
 public class MainApp extends Application {
 
+    private BackgroundTaskManager backgroundTaskManager;
+
     @Override
     public void start(Stage primaryStage) {
         try {
-            // Test database connection
-            System.out.println("========================================");
-            System.out.println("Florist Management System Starting...");
-            System.out.println("========================================");
-
-            if (!DatabaseConnection.testConnection()) {
-                System.err.println("ERREUR: Impossible de se connecter à la base de données!");
-                System.err.println("Vérifiez que les fichiers sont accessibles.");
+            // Attempt to establish database connection
+            try {
+                DatabaseConnection.getConnection();
+            } catch (Exception e) {
                 showDatabaseError(primaryStage);
                 return;
             }
 
-            // Initialize database (create tables from schema.sql)
-            System.out.println("\n--- Initialisation de la base de données ---");
-            com.florist.dao.DatabaseInitializer.initializeDatabase();
-            System.out.println("-----------------------------------------------\n");
+            // Initialize database schema
+            DatabaseInitializer.initializeDatabase();
 
-            // Run automatic inventory checks on startup
-            System.out.println("\n--- Vérification automatique de l'inventaire ---");
-            InventoryService inventoryService = new InventoryService();
-            int alertsGenerated = inventoryService.checkAllAlerts();
-            System.out.println("Vérification terminée. " + alertsGenerated + " alerte(s) générée(s).");
-            System.out.println("-----------------------------------------------\n");
+            // Run database migration for severity column
+            runDatabaseMigration();
 
-            // Load main view
+            // Run inventory checks
+            ServiceFactory.getInstance().getInventoryService().checkAllAlerts();
+
+            // Start background tasks (Phase 6: Threads & Concurrence)
+            backgroundTaskManager = new BackgroundTaskManager();
+            backgroundTaskManager.startAutoBackup();
+            backgroundTaskManager.startAlertMonitoring();
+
+            // Load main UI
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainView.fxml"));
             Parent root = loader.load();
 
@@ -50,17 +52,15 @@ public class MainApp extends Application {
 
             primaryStage.setTitle("Florist Management System");
             primaryStage.setScene(scene);
-            primaryStage.setResizable(true);
+            primaryStage.setFullScreen(true); // Immersive Full Screen
+            primaryStage.setFullScreenExitHint(""); // Hide the "Press ESC" overlay
             primaryStage.setOnCloseRequest(event -> {
-                DatabaseConnection.closeConnection();
-                System.out.println("Application fermée.");
+                shutdown();
             });
 
             primaryStage.show();
-            System.out.println("✓ Application lancée avec succès!");
 
         } catch (Exception e) {
-            System.err.println("Erreur lors du démarrage de l'application:");
             e.printStackTrace();
         }
     }
@@ -71,22 +71,54 @@ public class MainApp extends Application {
     private void showDatabaseError(Stage stage) {
         javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
                 javafx.scene.control.Alert.AlertType.ERROR);
-        alert.setTitle("Erreur de Connexion");
-        alert.setHeaderText("Impossible de se connecter à la base de données");
+        alert.setTitle("Connection Error");
+        alert.setHeaderText("Unable to connect to the database");
         alert.setContentText(
-                "Veuillez vérifier:\n" +
-                        "1. MySQL est démarré\n" +
-                        "2. La base de données 'florist_db' existe\n" +
-                        "3. Les identifiants dans DatabaseConnection.java sont corrects\n" +
-                        "4. Le script schema.sql a été exécuté\n\n" +
-                        "Commande: mysql -u root -p florist_db < src/main/resources/schema.sql");
+                "Please check:\n" +
+                        "1. MySQL is running\n" +
+                        "2. Database 'florist_db' exists\n" +
+                        "3. Credentials in DatabaseConnection.java are correct\n" +
+                        "4. Schema.sql script has been executed\n\n" +
+                        "Command: mysql -u root -p florist_db < src/main/resources/schema.sql");
         alert.showAndWait();
         System.exit(1);
     }
 
+    /**
+     * Runs database migration to add severity column if it doesn't exist.
+     */
+    private void runDatabaseMigration() {
+        try {
+            java.sql.Connection conn = DatabaseConnection.getConnection();
+            java.sql.Statement stmt = conn.createStatement();
+
+            String sql = "ALTER TABLE stock_alerts " +
+                    "ADD COLUMN IF NOT EXISTS severity VARCHAR(10) DEFAULT 'WARNING' " +
+                    "COMMENT 'DANGER or WARNING' AFTER alert_type";
+
+            stmt.executeUpdate(sql);
+            System.out.println("✓ Database migration: severity column added/verified");
+
+            stmt.close();
+        } catch (Exception e) {
+            System.err.println("⚠ Database migration warning: " + e.getMessage());
+            // Don't fail the app if migration fails - column might already exist
+        }
+    }
+
+    /**
+     * Gracefully shutdown the application.
+     */
+    private void shutdown() {
+        if (backgroundTaskManager != null) {
+            backgroundTaskManager.shutdown();
+        }
+        DatabaseConnection.closeConnection();
+    }
+
     @Override
     public void stop() {
-        DatabaseConnection.closeConnection();
+        shutdown();
     }
 
     public static void main(String[] args) {
