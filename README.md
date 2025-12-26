@@ -117,5 +117,3 @@ PetalSuite features the **NexaVerse** design system—a modern, high-contrast th
 - **Palette**: Deep Crimson and Rose accents on a clean, light backdrop.
 - **Typography**: Focused on readability using `Inter` and `Segoe UI`.
 - **Interaction**: Premium micro-animations and intuitive hover states (High-visibility text contrast).
-
----
