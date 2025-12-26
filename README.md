@@ -119,5 +119,3 @@ PetalSuite features the **NexaVerse** design system—a modern, high-contrast th
 - **Interaction**: Premium micro-animations and intuitive hover states (High-visibility text contrast).
 
 ---
-
-**Developed with precision by Antigravity**
