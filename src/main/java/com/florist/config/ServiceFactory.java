@@ -1,6 +1,7 @@
 package com.florist.config;
 
 import com.florist.application.service.AlertService;
+import com.florist.application.service.CsvImportService;
 import com.florist.application.service.FlowerService;
 import com.florist.application.service.SaleService;
 import com.florist.application.service.SupplierService;
@@ -46,6 +47,7 @@ public class ServiceFactory {
     private final SupplierService supplierService;
     private final SaleService saleService;
     private final AlertService alertService;
+    private final CsvImportService csvImportService;
 
     private ServiceFactory() {
         // Initialize repositories
@@ -68,6 +70,7 @@ public class ServiceFactory {
         this.supplierService = new SupplierService(supplierRepository, supplierValidator);
         this.saleService = new SaleService(saleRepository, flowerRepository, saleValidator, inventoryService);
         this.alertService = new AlertService(alertRepository);
+        this.csvImportService = new CsvImportService(flowerService, saleService, supplierService);
     }
 
     /**
@@ -98,6 +101,10 @@ public class ServiceFactory {
 
     public AlertService getAlertService() {
         return alertService;
+    }
+
+    public CsvImportService getCsvImportService() {
+        return csvImportService;
     }
 
     // Getters for domain services (for backward compatibility)

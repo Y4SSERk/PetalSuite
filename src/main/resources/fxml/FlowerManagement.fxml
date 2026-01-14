@@ -26,14 +26,15 @@
                 </padding>
                 
                 <HBox spacing="12" alignment="CENTER_LEFT">
-                    <Button fx:id="refreshBtn" text="Refresh" onAction="#handleRefresh" styleClass="button"/>
-                    <Button fx:id="deleteBtn" text="Delete" onAction="#handleDelete" styleClass="danger-button"/>
+                    <Button fx:id="refreshBtn" onAction="#handleRefresh" styleClass="action-button" text="Refresh" />
+                    <Button onAction="#handleImport" styleClass="action-button" text="Import" />
+                    <Button fx:id="deleteBtn" onAction="#handleDelete" styleClass="action-button, delete-button" text="Delete" />
                     <Button fx:id="selectAllBtn" text="Select All" onAction="#handleSelectAll" styleClass="button" visible="false" managed="false"/>
                 </HBox>
                 
                 <TableView fx:id="flowerTable" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="idColumn" text="ID" prefWidth="50"/>
+                        <TableColumn fx:id="idColumn" text="ID" prefWidth="80"/>
                         <TableColumn fx:id="nameColumn" text="Name" prefWidth="120"/>
                         <TableColumn fx:id="colorColumn" text="Color" prefWidth="90"/>
                         <TableColumn fx:id="categoryColumn" text="Category" prefWidth="100"/>

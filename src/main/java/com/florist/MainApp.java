@@ -42,6 +42,7 @@ public class MainApp extends Application {
             backgroundTaskManager = new BackgroundTaskManager();
             backgroundTaskManager.startAutoBackup();
             backgroundTaskManager.startAlertMonitoring();
+            backgroundTaskManager.startSocketServer();
 
             // Load main UI
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainView.fxml"));

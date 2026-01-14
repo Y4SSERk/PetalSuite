@@ -1,0 +1,4 @@
+ID,Name,Color,Category,Price,Quantity,ArrivalDate,FreshnessDays,SupplierID
+200,importedLily,#800080,Potted Plant,32.0,100,2025-12-25,12,80
+201,importedTulip,#FFFFFF,Potted Plant,23.0,20,2025-12-01,12,80
+202,importedRose,#FF0000,Cut Flower,40.0,1,2025-12-25,12,80

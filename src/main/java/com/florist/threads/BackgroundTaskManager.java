@@ -6,6 +6,7 @@ import com.florist.domain.repository.SaleRepository;
 import com.florist.domain.repository.SupplierRepository;
 import com.florist.io.FileExportService;
 import com.florist.application.service.InventoryService;
+import com.florist.networking.InventoryServer;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -25,6 +26,7 @@ public class BackgroundTaskManager {
     private final FlowerRepository flowerRepository;
     private final SaleRepository saleRepository;
     private final SupplierRepository supplierRepository;
+    private final InventoryServer socketServer;
 
     private static final String BACKUP_DIR = "backups";
     private static final DateTimeFormatter BACKUP_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
@@ -37,6 +39,7 @@ public class BackgroundTaskManager {
         this.flowerRepository = factory.getFlowerRepository();
         this.saleRepository = factory.getSaleRepository();
         this.supplierRepository = factory.getSupplierRepository();
+        this.socketServer = new InventoryServer();
 
         new File(BACKUP_DIR).mkdirs();
     }
@@ -120,10 +123,16 @@ public class BackgroundTaskManager {
         System.out.println("[BackgroundTaskManager] Alert monitoring started (every 5 minutes)");
     }
 
+    public void startSocketServer() {
+        socketServer.start();
+        System.out.println("[BackgroundTaskManager] Socket Server started (Bonus Feature)");
+    }
+
     public void shutdown() {
         try {
             System.out.println("[BackgroundTaskManager] Shutting down...");
             scheduler.shutdown();
+            socketServer.stop();
             if (!scheduler.awaitTermination(5, TimeUnit.SECONDS)) {
                 scheduler.shutdownNow();
             }

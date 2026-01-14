@@ -48,12 +48,14 @@ public class SupplierManagementController {
     private Button deleteBtn;
 
     private SupplierService supplierService;
+    private com.florist.application.service.CsvImportService csvImportService;
     private ObservableList<Supplier> supplierList;
     private Supplier selectedSupplier;
 
     @FXML
     public void initialize() {
         this.supplierService = ServiceFactory.getInstance().getSupplierService();
+        this.csvImportService = ServiceFactory.getInstance().getCsvImportService();
         this.supplierList = FXCollections.observableArrayList();
 
         setupTable();
@@ -155,6 +157,26 @@ public class SupplierManagementController {
         emailField.clear();
         selectedSupplier = null;
         supplierTable.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    private void handleImport() {
+        javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+        fileChooser.setTitle("Import Suppliers CSV");
+        fileChooser.getExtensionFilters().add(new javafx.stage.FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        java.io.File file = fileChooser.showOpenDialog(supplierTable.getScene().getWindow());
+
+        if (file != null) {
+            try {
+                int count = csvImportService.importSuppliers(file);
+                NotificationService.showSuccess(supplierTable.getScene().getWindow(),
+                        count + " supplier(s) imported successfully!");
+                loadData();
+            } catch (Exception e) {
+                NotificationService.showError(supplierTable.getScene().getWindow(),
+                        "Failed to import suppliers: " + e.getMessage());
+            }
+        }
     }
 
     @FXML

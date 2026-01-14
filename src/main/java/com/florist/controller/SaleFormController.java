@@ -38,12 +38,14 @@ public class SaleFormController {
 
     private FlowerService flowerService;
     private SaleService saleService;
+    private com.florist.application.service.CsvImportService csvImportService;
 
     @FXML
     public void initialize() {
         ServiceFactory factory = ServiceFactory.getInstance();
         this.flowerService = factory.getFlowerService();
         this.saleService = factory.getSaleService();
+        this.csvImportService = factory.getCsvImportService();
 
         loadFlowers();
 
@@ -133,6 +135,26 @@ public class SaleFormController {
             NotificationService.showError(saveSaleBtn.getScene().getWindow(), "Invalid quantity format.");
         } catch (Exception e) {
             NotificationService.showError(saveSaleBtn.getScene().getWindow(), e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleImport() {
+        javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+        fileChooser.setTitle("Import Sales CSV");
+        fileChooser.getExtensionFilters().add(new javafx.stage.FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        java.io.File file = fileChooser.showOpenDialog(saveSaleBtn.getScene().getWindow());
+
+        if (file != null) {
+            try {
+                int count = csvImportService.importSales(file);
+                NotificationService.showSuccess(saveSaleBtn.getScene().getWindow(),
+                        count + " sale(s) imported successfully!");
+                loadFlowers(); // Refresh stock counts
+            } catch (Exception e) {
+                NotificationService.showError(saveSaleBtn.getScene().getWindow(),
+                        "Failed to import sales: " + e.getMessage());
+            }
         }
     }
 

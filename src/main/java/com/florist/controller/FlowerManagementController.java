@@ -75,6 +75,7 @@ public class FlowerManagementController {
     // Services (injected via ServiceFactory)
     private FlowerService flowerService;
     private SupplierService supplierService;
+    private com.florist.application.service.CsvImportService csvImportService;
 
     // State
     private ObservableList<Flower> flowerList;
@@ -87,6 +88,7 @@ public class FlowerManagementController {
         ServiceFactory factory = ServiceFactory.getInstance();
         this.flowerService = factory.getFlowerService();
         this.supplierService = factory.getSupplierService();
+        this.csvImportService = factory.getCsvImportService();
 
         this.flowerList = FXCollections.observableArrayList();
 
@@ -107,6 +109,7 @@ public class FlowerManagementController {
 
         // Setup table columns
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        idColumn.setStyle("-fx-alignment: CENTER;");
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
@@ -346,6 +349,26 @@ public class FlowerManagementController {
         loadFlowers();
         NotificationService.showInfo(flowerTable.getScene().getWindow(),
                 "Flower list refreshed!");
+    }
+
+    @FXML
+    private void handleImport() {
+        javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+        fileChooser.setTitle("Import Flowers CSV");
+        fileChooser.getExtensionFilters().add(new javafx.stage.FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        java.io.File file = fileChooser.showOpenDialog(flowerTable.getScene().getWindow());
+
+        if (file != null) {
+            try {
+                int count = csvImportService.importFlowers(file);
+                NotificationService.showSuccess(flowerTable.getScene().getWindow(),
+                        count + " flower(s) imported successfully!");
+                loadFlowers();
+            } catch (Exception e) {
+                NotificationService.showError(flowerTable.getScene().getWindow(),
+                        "Failed to import flowers: " + e.getMessage());
+            }
+        }
     }
 
     @FXML

@@ -23,6 +23,7 @@
                     <Label text="ALL SUPPLIERS" styleClass="card-title"/>
                     <Region HBox.hgrow="ALWAYS" />
                     <Button fx:id="refreshBtn" text="Refresh" onAction="#handleRefresh" styleClass="button-ghost"/>
+                    <Button onAction="#handleImport" styleClass="button-ghost" text="Import" />
                     <Button fx:id="selectAllBtn" text="Select All" onAction="#handleSelectAll" styleClass="button-ghost" visible="false" managed="false"/>
                     <Button fx:id="deleteBtn" text="Delete" onAction="#handleDelete" styleClass="button-danger"/>
                 </HBox>
@@ -57,13 +58,13 @@
                 
                 <Separator />
                 
-                <VBox spacing="10">
-                    <Button fx:id="addBtn" text="Create New Supplier" onAction="#handleAdd" styleClass="button-primary" prefWidth="Infinity" />
-                    <HBox spacing="10">
-                        <Button fx:id="updateBtn" text="Save Changes" onAction="#handleUpdate" styleClass="button" HBox.hgrow="ALWAYS" prefWidth="Infinity" />
-                        <Button fx:id="clearBtn" text="Clear" onAction="#handleClear" styleClass="button-ghost" HBox.hgrow="ALWAYS" prefWidth="Infinity" />
-                    </HBox>
-                </VBox>
+                    <VBox spacing="10">
+                        <Button fx:id="addBtn" onAction="#handleAdd" prefWidth="Infinity" styleClass="button-primary" text="Create New Supplier" />
+                        <HBox spacing="10">
+                            <Button fx:id="updateBtn" onAction="#handleUpdate" maxWidth="Infinity" styleClass="button-primary" text="Save Changes" HBox.hgrow="ALWAYS" />
+                            <Button fx:id="clearBtn" onAction="#handleClear" maxWidth="Infinity" styleClass="button-ghost" text="Clear" HBox.hgrow="ALWAYS" />
+                        </HBox>
+                    </VBox>
             </VBox>
         </HBox>
     </center>

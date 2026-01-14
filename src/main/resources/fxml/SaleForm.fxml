@@ -60,8 +60,8 @@
                 
                 <HBox spacing="16" alignment="CENTER_RIGHT">
                     <Button fx:id="clearBtn" text="Clear" onAction="#handleClear" styleClass="button-ghost" prefWidth="120"/>
-                    <Button fx:id="saveSaleBtn" text="Complete Sale" 
-                            onAction="#handleSaveSale" styleClass="button-primary" prefWidth="200"/>
+                    <Button onAction="#handleImport" prefWidth="120.0" styleClass="action-button" text="Import Sales" />
+                    <Button fx:id="saveSaleBtn" onAction="#handleSaveSale" prefWidth="160.0" styleClass="primary-button" text="Complete Sale" />
                 </HBox>
             </VBox>
         </HBox>
